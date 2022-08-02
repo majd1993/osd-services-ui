@@ -1,7 +1,46 @@
-import * as React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import {  useNavigate } from 'react-router-dom';
+
+const allowedUsers = [
+    { user_email: 'majd.93.isk@gmail.com', user_password: 'majd1993' },
+    { user_email: 'user.01.osd@gmail.com', user_password: 'user01' },
+];
 
 export default function LoginPage() {
+    const navigate = useNavigate();
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errorSpan, setErrorSpan] = useState(false);
+
+
+    const checkIfEmailIsCorrect = () => {
+        return allowedUsers.find((userObj) => email === userObj.user_email);
+    };
+
+    const checkIfPasswordCompatibleWithEmail = () => {
+        let userData = checkIfEmailIsCorrect();
+        let errorSpan = false;
+        if (!userData) {
+            errorSpan = 'email';
+        }
+        else {
+            let { user_password } = userData;
+            if (user_password !== password) {
+                errorSpan = 'password';
+            }
+            else {
+                errorSpan = false;
+                navigate("/todolist");
+            };
+        };
+
+        setErrorSpan(errorSpan);
+    };
+
+    // useEffect(() => {
+    //     checkIfPasswordCompatibleWithEmail();
+    // }, [email, password]);// eslint-disable-line
 
     return (
         <div style={{ display: 'flex', width: '1920px', height: '1080px', overflow: 'hidden' }}>
@@ -38,7 +77,19 @@ export default function LoginPage() {
                         type="text"
                         id="email"
                         name="email"
+                        value={email}
+                        onChange={(event) => { setEmail(event.target.value); setErrorSpan(false); }}
                     />
+                    {errorSpan && errorSpan === 'email' &&
+                        <span
+                            style={{
+                                position: 'absolute', top: '444px', left: '1201px', width: '448px', height: '24px',
+                                fontWeight: '100', fontSize: '14px', color: '#DC3545'
+                            }}
+                        >
+                            {'Invalid email'}
+                        </span>}
+
                     <span
                         style={{
                             position: 'absolute', top: '469px', left: '1201px', width: '513.5px', height: '24px',
@@ -57,19 +108,32 @@ export default function LoginPage() {
                         type="password"
                         id="password"
                         name="password"
+                        value={password}
+                        onChange={(event) => { setPassword(event.target.value); setErrorSpan(false); }}
                     />
+                    {errorSpan && errorSpan === 'password' &&
+                        <span
+                            style={{
+                                position: 'absolute', top: '539px', left: '1201px', width: '622px', height: '24px',
+                                fontWeight: '100', fontSize: '14px', color: '#DC3545'
+                            }}
+                        >
+                            {'Incorrect Password'}
+                        </span>}
+
                     <br></br>
                     <button
                         style={{
-                            position: 'absolute', top: '577px', left: '1201px', width: '564px', height: '38px',
+                            position: 'absolute', top: '577px', left: '1201px', width: '540px', height: '38px',
                             fontWeight: 'bold', backgroundColor: '#B6A3C2', border: '0px',
-                            textAlign: 'center', borderRadius: '15px',
+                            textAlign: 'center', borderRadius: '15px', fontSize: '18px', color: '#403564', padding: '3px 0px 0px 0px'
                             /* padding: '3px 0px 0px 0px',
                             width: '81%', height: '18px', fontSize: '10px', fontWeight: 'bold', margin: '25px 0px 0px 9px',
                             textAlign: 'center', backgroundColor: '#B6A3C2', color: '#504471', borderRadius: '15px', border: '0px' */
                         }}
+                        onClick={() => checkIfPasswordCompatibleWithEmail()}
                     >
-                        <Link to="/todolist" style={{ textDecoration: 'none', fontSize: '18px', color: '#403564', padding: '3px 0px 0px 0px' }}>SIGN IN</Link>
+                        {'SIGN IN'}
                     </button>
                 </div>
             </div>
