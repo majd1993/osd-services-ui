@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { usersData } from '../to-do-list-data';
 
-const allowedUsers = [
-    { user_email: 'majd.93.isk@gmail.com', user_password: 'majd1993' },
-    { user_email: 'user.01.osd@gmail.com', user_password: 'user01' },
-];
 
 export default function LoginPage() {
     const navigate = useNavigate();
@@ -15,7 +12,7 @@ export default function LoginPage() {
 
 
     const checkIfEmailIsCorrect = () => {
-        return allowedUsers.find((userObj) => email === userObj.user_email);
+        return usersData.find((userObj) => email === userObj.user_email);
     };
 
     const checkIfPasswordCompatibleWithEmail = () => {

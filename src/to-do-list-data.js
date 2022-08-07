@@ -42,7 +42,7 @@ export const usersData = [
     },
     {
         user_email: 'lii.01.osd@gmail.com',
-        user_password: 'user01',
+        user_password: 'lii01',
         user_profile: 'lii.jfif',
         user_todo_list: {
             "To Do": [
