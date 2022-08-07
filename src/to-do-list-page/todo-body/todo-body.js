@@ -8,6 +8,7 @@ export default function ToDoBody(props) {
   } = props;
 
   const [draggedItem, setDraggedItem] = useState(false);
+  const [changingValueInsideCard, setChangingValueInsideCard] = useState(false);
 
   const importanceStyles = {
     Low: { background: '#39AC95', width: '44px' },
@@ -33,7 +34,149 @@ export default function ToDoBody(props) {
       setAllToDoLists({ ...newAllToDoLists })
 
     }
+  };
 
+
+
+  const updateCard = (index, status, inputName, newValue) => {
+    let newAllToDoLists = { ...allToDoLists };
+    let newListOfThisStatus = [...newAllToDoLists[status]];
+
+    newListOfThisStatus[index] = { ...newListOfThisStatus[index], [inputName]: newValue };
+    newAllToDoLists = {
+      ...newAllToDoLists,
+      [status]: [...newListOfThisStatus],
+    };
+
+    setAllToDoLists({ ...newAllToDoLists })
+  };
+
+  const cardTitleHTML = (index, status, id, title) => {
+    let isEditing = changingValueInsideCard &&
+      changingValueInsideCard.status === status &&
+      changingValueInsideCard.id === id &&
+      changingValueInsideCard.inputName === 'title';
+
+    return (
+      <div
+        style={{ display: 'flex', width: '367.74px', height: '43.5px' }}
+      >
+        {isEditing
+          ? <input
+            style={{
+              width: '367.74px', height: '33px', fontSize: '13px', fontWeight: '400', borderRadius: '7px',
+              color: '#000000', margin: '8.5px 0px 0px 14.19px', letterSpacing: '0px',
+            }}
+            type="text"
+            id="email"
+            name="email"
+            value={changingValueInsideCard.newValue}
+            onChange={(event) => setChangingValueInsideCard({ ...changingValueInsideCard, newValue: event.target.value })}
+            onBlur={() => { updateCard(index, status, 'title', changingValueInsideCard.newValue); setChangingValueInsideCard(false); }}
+          />
+          : <span
+            style={{
+              width: '367.74px', height: '43.5px', fontSize: '16px', fontWeight: '400',
+              color: '#FFFFFF', margin: '15.5px 0px 0px 14.19px', letterSpacing: '0px',
+            }}
+            onClick={() => setChangingValueInsideCard({ status, id, inputName: 'title', newValue: title })}
+          >
+            {title}
+          </span>
+        }
+      </div>
+    );
+  };
+
+  const cardCategoryHTML = (index, status, id, Category) => {
+    let isEditing = changingValueInsideCard &&
+      changingValueInsideCard.status === status &&
+      changingValueInsideCard.id === id &&
+      changingValueInsideCard.inputName === 'Category';
+
+    return (
+      <div
+        style={{ display: 'flex', width: '367.74px', height: '17px', margin: '18px 0px 0px 14.19px', }}
+        onClick={() => setChangingValueInsideCard({ status, id, inputName: 'Category', newValue: Category })}
+      >
+        <span
+          style={{
+            width: '101.15px', height: '14px', fontSize: '13px', fontWeight: '200',
+            color: '#6C757D', letterSpacing: '0px',
+          }}
+        >
+          {"Category"}
+        </span>
+        {isEditing
+          ? <input
+            style={{
+              width: '367.74px', height: '33px', fontSize: '14px', fontWeight: '400', borderRadius: '7px',
+              color: '#000000', margin: '-7px 0px 0px 14.19px', letterSpacing: '0px',
+            }}
+            type="text"
+            id="email"
+            name="email"
+            value={changingValueInsideCard.newValue}
+            onChange={(event) => setChangingValueInsideCard({ ...changingValueInsideCard, newValue: event.target.value })}
+            onBlur={() => { updateCard(index, status, 'Category', changingValueInsideCard.newValue); setChangingValueInsideCard(false); }}
+          />
+          : <span
+            style={{
+              height: '17px', fontSize: '14px', fontWeight: '200',
+              color: '#FFFFFF', letterSpacing: '0px',
+            }}
+          >
+            {Category}
+          </span>
+        }
+      </div>
+    );
+  };
+
+  const cardDueDateHTML = (index, status, id, DueDate) => {
+    let isEditing = changingValueInsideCard &&
+      changingValueInsideCard.status === status &&
+      changingValueInsideCard.id === id &&
+      changingValueInsideCard.inputName === 'DueDate';
+
+    return (
+      <div
+        style={{ display: 'flex', width: '367.74px', height: '17px', margin: '18px 0px 0px 14.19px', }}
+        onClick={() => setChangingValueInsideCard({ status, id, inputName: 'DueDate', newValue: DueDate })}
+      >
+        <span
+          style={{
+            width: '101.15px', height: '14px', fontSize: '13px', fontWeight: '200',
+            color: '#6C757D', letterSpacing: '0px',
+          }}
+        >
+          {"Due Date"}
+        </span>
+        {isEditing
+          ? <input
+            style={{
+              width: '367.74px', height: '33px', fontSize: '14px', fontWeight: '400', borderRadius: '7px',
+              color: '#000000', margin: '-7px 0px 0px 14.19px', letterSpacing: '0px',
+            }}
+            type="date"
+            // pattern="\d{2}/\d{2}/\d{4}"
+            id="email"
+            name="email"
+            value={changingValueInsideCard.newValue}
+            onChange={(event) => setChangingValueInsideCard({ ...changingValueInsideCard, newValue: event.target.value })}
+            onBlur={() => { updateCard(index, status, 'DueDate', changingValueInsideCard.newValue); setChangingValueInsideCard(false); }}
+          />
+          : <span
+            style={{
+              height: '17px', fontSize: '14px', fontWeight: '200',
+              color: '#FFFFFF', letterSpacing: '0px',
+            }}
+          >
+            {DueDate}
+          </span>
+        }
+      </div>
+    );
   };
 
   const cardHTML = (status) => {
@@ -42,7 +185,7 @@ export default function ToDoBody(props) {
         {allToDoLists &&
           allToDoLists[status] &&
           allToDoLists[status].map((item, index) => {
-            const { title, Category, DueDate, Estimate, Importance } = item;
+            const { id, title, Category, DueDate, Estimate, Importance } = item;
             const marginTop = index > 0 ? '20px' : '10px';
 
             return (
@@ -56,52 +199,10 @@ export default function ToDoBody(props) {
                   draggable={"true"}
                   onDragStart={() => setDraggedItem({ ...item, status })}
                 >
-                  <div style={{ display: 'flex', width: '367.74px', height: '43.5px' }}>
-                    <span
-                      style={{
-                        width: '367.74px', height: '43.5px', fontSize: '16px', fontWeight: '400',
-                        color: '#FFFFFF', margin: '15.5px 0px 0px 14.19px', letterSpacing: '0px',
-                      }}
-                    >
-                      {title}
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', width: '367.74px', height: '17px', margin: '18px 0px 0px 14.19px', }}>
-                    <span
-                      style={{
-                        width: '101.15px', height: '14px', fontSize: '13px', fontWeight: '200',
-                        color: '#6C757D', letterSpacing: '0px',
-                      }}
-                    >
-                      {"Category"}
-                    </span>
-                    <span
-                      style={{
-                        height: '17px', fontSize: '14px', fontWeight: '200',
-                        color: '#FFFFFF', letterSpacing: '0px',
-                      }}
-                    >
-                      {Category}
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', width: '367.74px', height: '17px', margin: '18px 0px 0px 14.19px', }}>
-                    <span
-                      style={{
-                        width: '101.15px', height: '14px', fontSize: '13px', fontWeight: '200',
-                        color: '#6C757D', letterSpacing: '0px',
-                      }}
-                    >
-                      {"Due Date"}
-                    </span>
-                    <span
-                      style={{
-                        width: '101.15px', height: '17px', fontSize: '14px', fontWeight: '200',
-                        color: '#FFFFFF', letterSpacing: '0px',
-                      }}
-                    >
-                      {DueDate}
-                    </span>
-                  </div>
+                  {cardTitleHTML(index, status, id, title)}
+                  {cardCategoryHTML(index, status, id, Category)}
+                  {cardDueDateHTML(index, status, id, DueDate)}
+            
                   <div style={{ display: 'flex', width: '367.74px', height: '17px', margin: '18px 0px 0px 14.19px', }}>
                     <span
                       style={{
