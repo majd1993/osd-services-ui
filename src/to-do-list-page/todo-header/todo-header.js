@@ -1,6 +1,5 @@
 import { AppBar, Avatar, Box, IconButton, Modal, Toolbar, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usersData } from '../../to-do-list-data';
@@ -10,7 +9,7 @@ const style = {
   height: '126px',
   margin: '57px 0px 0px 1490px',
   background: '#232323',
-  border: '0px !important',
+  border: '1px solid #707070 !important',
   display: 'flex',
 };
 
@@ -18,7 +17,8 @@ export default function ToDoHeader(props) {
   const {
     email,
     displayCloseIcon, setDisplayCloseIcon,
-    displayWarningMessage, setDisplayWarningMessage
+    displayWarningMessage, setDisplayWarningMessage,
+    allToDoLists, setAllToDoLists,
   } = props;
 
   const navigate = useNavigate();
@@ -26,6 +26,35 @@ export default function ToDoHeader(props) {
   const [openLogoutModal, setOpenLogoutModal] = useState(false);
 
   const { user_profile } = usersData.find(userObj => userObj.user_email === email);
+
+  const addItem = () => {
+    let newAllToDoLists = { ...allToDoLists };
+
+    // here we should call an api request to add the new item and get the id of as response.
+    let nextId = getNextId(); // generate an id because i don't have an api yet
+    let newItem = { id: nextId, title: 'New Item', Category: '', DueDate: '', Estimate: '', Importance: '' };
+
+    newAllToDoLists = {
+      ...newAllToDoLists,
+      'To Do': [...newAllToDoLists['To Do'], newItem],//add item
+    };
+
+    setAllToDoLists({ ...newAllToDoLists })
+  };
+
+  const getNextId = () => { // get max of max ids in each status
+    let ToDoListHigherId = allToDoLists['To Do'] && allToDoLists['To Do'].length > 0
+      ? Math.max(...allToDoLists['To Do'].map((item) => { return item.id }))
+      : -1;
+    let DoingListHigherId = allToDoLists['Doing'] && allToDoLists['Doing'].length > 0
+      ? Math.max(...allToDoLists['Doing'].map((item) => { return item.id }))
+      : -1;
+    let DoneListHigherId = allToDoLists['Done'] && allToDoLists['Done'].length > 0
+      ? Math.max(...allToDoLists['Done'].map((item) => { return item.id }))
+      : -1;
+
+    return Math.max(ToDoListHigherId, DoingListHigherId, DoneListHigherId) + 1;
+  };
 
   const LogoutModal = () => {
     return (
@@ -45,7 +74,7 @@ export default function ToDoHeader(props) {
             <span
               style={{
                 width: '344px', height: '21px', fontSize: '18px', fontWeight: '100',
-                backgroundColor: 'transparent', color: '#B6A3C2', margin: '0px 0px 0px 23px', letterSpacing: '0px'
+                backgroundColor: 'transparent', color: '#B6A3C2', margin: '0px 0px 0px 23.13px', letterSpacing: '0px'
               }}
             >
               {email}
@@ -87,15 +116,17 @@ export default function ToDoHeader(props) {
           >
             <SearchIcon style={{ color: '#AB8BC4' }} />
           </IconButton>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
+
+          <div
+            style={{
+              width: '24px', height: '24px', margin: '22px 31px 0px 0px',
+              backgroundImage: "url('./todo-page/Circle.png')"
+            }}
+            onClick={() => addItem()}
           >
-            <ControlPointIcon style={{ color: '#AB8BC4' }} />
-          </IconButton>
+            <img src="./todo-page/Add.svg" alt="logo" width={"12px"} height={'12px'} style={{ margin: '6px' }} />
+          </div>
+
           <Avatar
             alt={user_profile} src={"./users-profiles/" + user_profile}
             style={{ width: '42px', height: '42px', margin: '13px 45.38px 0px 0px' }}

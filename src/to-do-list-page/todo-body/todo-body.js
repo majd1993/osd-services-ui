@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { usersData } from '../../to-do-list-data';
 
 export default function ToDoBody(props) {
-  const { email, displayWarningMessage } = props;
+  const {
+    displayWarningMessage,
+    allToDoLists, setAllToDoLists
+  } = props;
 
   const [draggedItem, setDraggedItem] = useState(false);
 
@@ -11,9 +13,6 @@ export default function ToDoBody(props) {
     Medium: { background: '#FE913E', width: '66px' },
     High: { background: '#DC3545', width: '46px' },
   };
-
-  const { user_todo_list } = usersData.find(userObj => userObj.user_email === email);
-  const [allToDoLists, setAllToDoLists] = useState(user_todo_list);
 
   const onDragOver = (event) => {
     event.stopPropagation();
@@ -58,7 +57,7 @@ export default function ToDoBody(props) {
                 <div style={{ display: 'flex', width: '367.74px', height: '43.5px' }}>
                   <span
                     style={{
-                      width: '367.74px', height: '43.5px', fontSize: '16px', fontWeight: '200',
+                      width: '367.74px', height: '43.5px', fontSize: '16px', fontWeight: '400',
                       color: '#FFFFFF', margin: '15.5px 0px 0px 14.19px', letterSpacing: '0px',
                     }}
                   >
