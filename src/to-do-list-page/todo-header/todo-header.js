@@ -1,10 +1,31 @@
-import { AppBar, Avatar, Box, IconButton, Modal, Toolbar, Typography } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import { AppBar, Avatar, Box, InputAdornment, Modal, styled, TextField, Toolbar, Tooltip, tooltipClasses, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usersData } from '../../to-do-list-data';
 
-const style = {
+const useStyles = makeStyles((theme) => ({
+  textField: {
+    width: "504.04px",
+    height: "49.14px",
+    borderRadius: '10px',
+    border:'0px !important',
+    fontSize: '12px !important',
+  },
+  textFieldInputProps: {
+    width: "504.04px",
+    height: "49.14px",
+    fontSize: "12px",
+    fontWeight: "200",
+    fontFamily: "Arial, sans-serif",
+    padding: "0px 0px 0px 10px !important",
+    color: '#ffffff !important',
+    border:'2px solid #B6A3C2',
+    borderRadius: '20px  !important',
+  },
+}));
+
+const logoutBoxStyle = {
   width: '384px',
   height: '126px',
   margin: '57px 0px 0px 1490px',
@@ -13,9 +34,22 @@ const style = {
   display: 'flex',
 };
 
+const CutomizedTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: '#5B5E60',
+    color: '#FFFFFF',
+    padding: '9px 9px 12px 13px',
+  },
+}));
+
 export default function ToDoHeader(props) {
+  const classes = useStyles();
+
   const {
     email,
+    serachValue, setSearchValue,
     displayCloseIcon, setDisplayCloseIcon,
     displayWarningMessage, setDisplayWarningMessage,
     allToDoLists, setAllToDoLists,
@@ -23,6 +57,7 @@ export default function ToDoHeader(props) {
 
   const navigate = useNavigate();
 
+  const [showSearchInput, setShowSearchInput] = useState(false);
   const [openLogoutModal, setOpenLogoutModal] = useState(false);
 
   const { user_profile } = usersData.find(userObj => userObj.user_email === email);
@@ -64,7 +99,7 @@ export default function ToDoHeader(props) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={logoutBoxStyle}>
           <Avatar
             alt={user_profile} src={"./users-profiles/" + user_profile}
             style={{ width: '69.25px', height: '69.25px', margin: '23px 0px 0px 24.64px' }}
@@ -107,25 +142,47 @@ export default function ToDoHeader(props) {
         <div style={{ display: 'flex', width: '1920px', height: '68px', fontSize: '10px', backgroundColor: '#222222', color: '#9B9B9B' }}>
           <img src="./todo-page/SmallLogo.png" alt="login_image" width={"94px"} height={"57px"} style={{ margin: '5px 0px 0px 34px' }} />
           <div variant="h6" component="div" style={{ flexGrow: 1 }}></div>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <SearchIcon style={{ color: '#AB8BC4' }} />
-          </IconButton>
-
-          <div
-            style={{
-              width: '24px', height: '24px', margin: '22px 31px 0px 0px',
-              backgroundImage: "url('./todo-page/Circle.png')"
-            }}
-            onClick={() => addItem()}
-          >
-            <img src="./todo-page/Add.svg" alt="logo" width={"12px"} height={'12px'} style={{ margin: '6px' }} />
-          </div>
+          {showSearchInput
+            ? <div style={{ display: 'flex', margin: '10.71px 22.63px 0px 0px', }}>
+              <TextField
+                placeholder={"What are you looking for?"}
+                InputProps={{
+                  className: classes.textFieldInputProps,
+                  endAdornment:
+                    <InputAdornment position="start" onClick={() => { setShowSearchInput(false); setSearchValue('') }}>
+                      <img src="./todo-page/Search.png" alt="logo" width={"24.32px"} height={'24.33px'} />
+                    </InputAdornment>,
+                }}
+                className={classes.textField}
+                value={serachValue}
+                // variant={"standard"}
+                size={"small"}
+                onChange={(event) => setSearchValue(event.target.value)}
+              >
+              </TextField>
+            </div>
+            : <div
+              style={{ margin: '21.84px 38.46px 0px 0px', }}
+              onClick={() => setShowSearchInput(true)}
+            >
+              <img src="./todo-page/Search.png" alt="logo" width={"24.32px"} height={'24.33px'} />
+            </div>
+          }
+          <CutomizedTooltip
+            title={
+              <span style={{ width: '85px', height: '39px', padding: '9px 9px 12px 13px', fontSize: '16px', fontWeight: '200' }}>{"Add Item"}</span>
+            }
+            placement="bottom-start">
+            <div
+              style={{
+                width: '24px', height: '24px', margin: '22px 31px 0px 0px',
+                backgroundImage: "url('./todo-page/Circle.png')"
+              }}
+              onClick={() => addItem()}
+            >
+              <img src="./todo-page/Add.svg" alt="logo" width={"12px"} height={'12px'} style={{ margin: '6px' }} />
+            </div>
+          </CutomizedTooltip>
 
           <Avatar
             alt={user_profile} src={"./users-profiles/" + user_profile}

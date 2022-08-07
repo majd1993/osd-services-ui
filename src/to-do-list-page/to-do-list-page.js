@@ -11,6 +11,7 @@ export default function ToDoListPage() {
     const { user_todo_list } = usersData.find(userObj => userObj.user_email === email);
     const [allToDoLists, setAllToDoLists] = useState(user_todo_list);
 
+    const [serachValue, setSearchValue] = useState("");
     const [displayCloseIcon, setDisplayCloseIcon] = useState(false);
     const [displayWarningMessage, setDisplayWarningMessage] = useState(true);
 
@@ -18,6 +19,8 @@ export default function ToDoListPage() {
         <>
             <ToDoHeader
                 email={email}
+                serachValue={serachValue}
+                setSearchValue={setSearchValue}
                 displayCloseIcon={displayCloseIcon}
                 setDisplayCloseIcon={setDisplayCloseIcon}
                 displayWarningMessage={displayWarningMessage}
@@ -26,6 +29,7 @@ export default function ToDoListPage() {
                 setAllToDoLists={setAllToDoLists}
             />
             <ToDoBody
+                serachValue={serachValue}
                 displayWarningMessage={displayWarningMessage}
                 allToDoLists={allToDoLists}
                 setAllToDoLists={setAllToDoLists}
