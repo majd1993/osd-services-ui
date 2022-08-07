@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const allowedUsers = [
     { user_email: 'majd.93.isk@gmail.com', user_password: 'majd1993' },
@@ -31,7 +31,7 @@ export default function LoginPage() {
             }
             else {
                 errorSpan = false;
-                navigate("/todolist");
+                navigate("/todolist", { state: { email } });
             };
         };
 
