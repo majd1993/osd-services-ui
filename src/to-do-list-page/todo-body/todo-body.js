@@ -47,103 +47,102 @@ export default function ToDoBody(props) {
 
             return (
               <div key={index}>
-                {item.title.toLowerCase().trim().includes(serachValue.toLowerCase().trim())
-                  ? <div
-                    style={{
-                      width: '418.28px', height: '213.37px', background: '#212529', borderRadius: '6px',
-                      marginTop: marginTop, boxShadow: '0px 3px 6px #00000029'
-                    }}
-                    draggable={"true"}
-                    onDragStart={() => setDraggedItem({ ...item, status })}
-                  >
-                    <div style={{ display: 'flex', width: '367.74px', height: '43.5px' }}>
-                      <span
-                        style={{
-                          width: '367.74px', height: '43.5px', fontSize: '16px', fontWeight: '400',
-                          color: '#FFFFFF', margin: '15.5px 0px 0px 14.19px', letterSpacing: '0px',
-                        }}
-                      >
-                        {title}
-                      </span>
-                    </div>
-                    <div style={{ display: 'flex', width: '367.74px', height: '17px', margin: '18px 0px 0px 14.19px', }}>
-                      <span
-                        style={{
-                          width: '101.15px', height: '14px', fontSize: '13px', fontWeight: '200',
-                          color: '#6C757D', letterSpacing: '0px',
-                        }}
-                      >
-                        {"Category"}
-                      </span>
-                      <span
-                        style={{
-                          height: '17px', fontSize: '14px', fontWeight: '200',
-                          color: '#FFFFFF', letterSpacing: '0px',
-                        }}
-                      >
-                        {Category}
-                      </span>
-                    </div>
-                    <div style={{ display: 'flex', width: '367.74px', height: '17px', margin: '18px 0px 0px 14.19px', }}>
-                      <span
-                        style={{
-                          width: '101.15px', height: '14px', fontSize: '13px', fontWeight: '200',
-                          color: '#6C757D', letterSpacing: '0px',
-                        }}
-                      >
-                        {"Due Date"}
-                      </span>
-                      <span
-                        style={{
-                          width: '101.15px', height: '17px', fontSize: '14px', fontWeight: '200',
-                          color: '#FFFFFF', letterSpacing: '0px',
-                        }}
-                      >
-                        {DueDate}
-                      </span>
-                    </div>
-                    <div style={{ display: 'flex', width: '367.74px', height: '17px', margin: '18px 0px 0px 14.19px', }}>
-                      <span
-                        style={{
-                          width: '101.15px', height: '14px', fontSize: '13px', fontWeight: '200',
-                          color: '#6C757D', letterSpacing: '0px',
-                        }}
-                      >
-                        {"Estimate"}
-                      </span>
-                      <span
-                        style={{
-                          height: '17px', fontSize: '14px', fontWeight: '200',
-                          color: '#FFFFFF', letterSpacing: '0px',
-                        }}
-                      >
-                        {Estimate}
-                      </span>
-                    </div>
-                    <div style={{ display: 'flex', width: '367.74px', height: '17px', margin: '18px 0px 0px 14.19px', }}>
-                      <span
-                        style={{
-                          width: '101.15px', height: '14px', fontSize: '13px', fontWeight: '200',
-                          color: '#6C757D', letterSpacing: '0px',
-                        }}
-                      >
-                        {"Importance"}
-                      </span>
-                      {Importance &&
-                        <div style={{ background: '#FE913E', height: '30px', borderRadius: '4px', textAlign: 'center', ...importanceStyles[Importance] }}>
-                          <span
-                            style={{
-                              height: '30px', fontSize: '13px', fontWeight: '200',
-                              color: '#FFFFFF', letterSpacing: '0px', marginTop: '11px'
-                            }}
-                          >
-                            {Importance}
-                          </span>
-                        </div>
-                      }
-                    </div>
+                {<div
+                  style={{
+                    width: '418.28px', height: '213.37px', borderRadius: '6px',
+                    background: serachValue && item.title.toLowerCase().trim().includes(serachValue.toLowerCase().trim()) ? '#103356' : '#212529',
+                    marginTop: marginTop, boxShadow: '0px 3px 6px #00000029'
+                  }}
+                  draggable={"true"}
+                  onDragStart={() => setDraggedItem({ ...item, status })}
+                >
+                  <div style={{ display: 'flex', width: '367.74px', height: '43.5px' }}>
+                    <span
+                      style={{
+                        width: '367.74px', height: '43.5px', fontSize: '16px', fontWeight: '400',
+                        color: '#FFFFFF', margin: '15.5px 0px 0px 14.19px', letterSpacing: '0px',
+                      }}
+                    >
+                      {title}
+                    </span>
                   </div>
-                  : <></>
+                  <div style={{ display: 'flex', width: '367.74px', height: '17px', margin: '18px 0px 0px 14.19px', }}>
+                    <span
+                      style={{
+                        width: '101.15px', height: '14px', fontSize: '13px', fontWeight: '200',
+                        color: '#6C757D', letterSpacing: '0px',
+                      }}
+                    >
+                      {"Category"}
+                    </span>
+                    <span
+                      style={{
+                        height: '17px', fontSize: '14px', fontWeight: '200',
+                        color: '#FFFFFF', letterSpacing: '0px',
+                      }}
+                    >
+                      {Category}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', width: '367.74px', height: '17px', margin: '18px 0px 0px 14.19px', }}>
+                    <span
+                      style={{
+                        width: '101.15px', height: '14px', fontSize: '13px', fontWeight: '200',
+                        color: '#6C757D', letterSpacing: '0px',
+                      }}
+                    >
+                      {"Due Date"}
+                    </span>
+                    <span
+                      style={{
+                        width: '101.15px', height: '17px', fontSize: '14px', fontWeight: '200',
+                        color: '#FFFFFF', letterSpacing: '0px',
+                      }}
+                    >
+                      {DueDate}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', width: '367.74px', height: '17px', margin: '18px 0px 0px 14.19px', }}>
+                    <span
+                      style={{
+                        width: '101.15px', height: '14px', fontSize: '13px', fontWeight: '200',
+                        color: '#6C757D', letterSpacing: '0px',
+                      }}
+                    >
+                      {"Estimate"}
+                    </span>
+                    <span
+                      style={{
+                        height: '17px', fontSize: '14px', fontWeight: '200',
+                        color: '#FFFFFF', letterSpacing: '0px',
+                      }}
+                    >
+                      {Estimate}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', width: '367.74px', height: '17px', margin: '18px 0px 0px 14.19px', }}>
+                    <span
+                      style={{
+                        width: '101.15px', height: '14px', fontSize: '13px', fontWeight: '200',
+                        color: '#6C757D', letterSpacing: '0px',
+                      }}
+                    >
+                      {"Importance"}
+                    </span>
+                    {Importance &&
+                      <div style={{ background: '#FE913E', height: '30px', borderRadius: '4px', textAlign: 'center', ...importanceStyles[Importance] }}>
+                        <span
+                          style={{
+                            height: '30px', fontSize: '13px', fontWeight: '200',
+                            color: '#FFFFFF', letterSpacing: '0px', marginTop: '11px'
+                          }}
+                        >
+                          {Importance}
+                        </span>
+                      </div>
+                    }
+                  </div>
+                </div>
                 }
               </div>
             )
